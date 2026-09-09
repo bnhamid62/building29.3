@@ -1,0 +1,5 @@
+# When the project folder itself is the document root (AppServ www/building29),
+# forward everything to public/.
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/building29/public/
+RewriteRule ^(.*)$ public/$1 [L]

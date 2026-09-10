@@ -1,5 +1,12 @@
 # When the project folder itself is the document root (AppServ www/building29),
 # forward everything to public/.
 RewriteEngine On
+
+# السماح بمرور بيانات تسجيل الدخول (حل مشكلة 401)
+CGIPassAuth On
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# توجيه الطلبات إلى مجلد public
 RewriteCond %{REQUEST_URI} !^/building29/public/
 RewriteRule ^(.*)$ public/$1 [L]

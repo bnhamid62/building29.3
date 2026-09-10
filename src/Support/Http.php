@@ -3,8 +3,15 @@ namespace App\Support;
 
 final class ApiError extends \RuntimeException
 {
-    public function __construct(public int $status, public string $errorCode, string $message, public array $fields = [])
+    public $status;
+    public $errorCode;
+    public $fields;
+
+    public function __construct($status, $errorCode, $message, $fields = [])
     {
+        $this->status = $status;
+        $this->errorCode = $errorCode;
+        $this->fields = $fields;
         parent::__construct($message);
     }
 }
@@ -29,7 +36,7 @@ final class Http
     {
         $raw = file_get_contents('php://input') ?: '';
         if ($raw === '') return [];
-        if (strlen($raw) > 2_000_000) throw new ApiError(413, 'payload_too_large', 'Request too large');
+        if (strlen($raw) > 2000000) throw new ApiError(413, 'payload_too_large', 'Request too large');
         $parsed = json_decode($raw, true);
         return is_array($parsed) ? $parsed : [];
     }
@@ -47,7 +54,7 @@ final class Http
             header('Access-Control-Allow-Origin: ' . $origin);
             header('Vary: Origin');
             header('Access-Control-Allow-Credentials: true');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Idempotency-Key');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Idempotency-Key, ngrok-skip-browser-warning');
             header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
             header('Access-Control-Max-Age: 600');
         }

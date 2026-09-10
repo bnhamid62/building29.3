@@ -71,15 +71,16 @@ async function raw<T>(method: Method, path: string, body?: Record<string, unknow
   const token = getToken();
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
-      method,
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-      ...(body ? { body: JSON.stringify(body) } : {}),
-    });
+   response = await fetch(`${API_BASE_URL}${path}`, {
+  method,
+  credentials: "include",
+  headers: {
+    "ngrok-skip-browser-warning": "true",
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  } as Record<string, string>,
+  ...(body ? { body: JSON.stringify(body) } : {}),
+});
   } catch {
     throw new ApiError(0, API_UNREACHABLE, `Cannot reach the API at ${API_BASE_URL}`);
   }
@@ -141,12 +142,15 @@ export async function upload<T>(path: string, form: FormData): Promise<T> {
   const token = getToken();
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
-      method: "POST",
-      credentials: "include",
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-      body: form,
-    });
+   response = await fetch(`${API_BASE_URL}${path}`, {
+  method: "POST",
+  credentials: "include",
+  headers: {
+    "ngrok-skip-browser-warning": "true",
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  } as Record<string, string>,
+  body: form,
+});
   } catch {
     throw new ApiError(0, API_UNREACHABLE, `Cannot reach the API at ${API_BASE_URL}`);
   }
@@ -179,10 +183,13 @@ export async function download(path: string, filename: string): Promise<void> {
   let response: Response;
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
-      method: "GET",
-      credentials: "include",
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+  method: "GET",
+  credentials: "include",
+  headers: {
+    "ngrok-skip-browser-warning": "true",
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  } as Record<string, string>,
+});
   } catch {
     throw new ApiError(0, API_UNREACHABLE, `Cannot reach the API at ${API_BASE_URL}`);
   }

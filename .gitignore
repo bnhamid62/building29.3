@@ -30,3 +30,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets — never commit real credentials
+config/config.php
+.env
+.env.*
+!.env.example
+backend/storage/uploads/*
+!backend/storage/uploads/.gitkeep
+storage/uploads/*
+!storage/uploads/.gitkeep
+
+# Stray local/binary artifacts that shouldn't be in version control
+*.exe
+/*.pdf
+tsconfig.tsbuildinfo

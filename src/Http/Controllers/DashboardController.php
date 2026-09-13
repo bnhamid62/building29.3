@@ -56,6 +56,10 @@ final class DashboardController
                 'balance'          => (float) $row['required'] - (float) $row['paid'],
             ];
         }
+        $subscriptions = Db::one(
+    'SELECT COUNT(*) AS configured, COALESCE(SUM(monthly_amount), 0) AS monthly_expected
+     FROM apartment_subscriptions WHERE is_active = 1'
+);
         $equipment = Db::all('SELECT id, name_ar, name_fr, kind, status, last_check FROM equipment');
         Http::json([
             'expected_total'      => $expected,
@@ -64,6 +68,10 @@ final class DashboardController
             'apartments_total'    => $apartments,
             'apartments_settled'  => (int) ($settledRow['c'] ?? 0),
             'apartments_unpaid'   => $apartments - (int) ($settledRow['c'] ?? 0),
+            'subscriptions'       => [
+            'apartments_configured'  => (int) ($subscriptions['configured'] ?? 0),
+            'monthly_expected_total' => (float) ($subscriptions['monthly_expected'] ?? 0),
+],
             'active_projects'     => array_map([ProjectsController::class, 'shape'], $activeProjects),
             'recent_payments'     => array_map([PaymentsController::class, 'shape'], $recent),
             'my_apartment'        => $mine,

@@ -164,6 +164,7 @@ export interface DashboardSummary {
     balance: number;
   } | null;
   equipment: EquipmentRow[];
+ subscriptions: { apartments_configured: number; monthly_expected_total: number };
 }
 
 export interface ResidentRow {

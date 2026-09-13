@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Wallet, TrendingUp, AlertCircle, DoorClosed, Home } from "lucide-react";
+import { Wallet, TrendingUp, AlertCircle, DoorClosed, Home, CalendarClock } from "lucide-react";
 import { buildingApi } from "@/api/endpoints";
 import { AppShell } from "@/components/app/AppShell";
 import { StatCard } from "@/components/app/StatCard";
@@ -55,6 +55,13 @@ function DashboardPage() {
             value={`${data.apartments_settled}/${data.apartments_total}`}
             hint={`${data.apartments_unpaid} ${t("apartments_unpaid")}`}
           />
+            <StatCard
+            icon={CalendarClock}
+            tone="primary"
+            label={t("subscriptions_monthly")}
+            value={data.subscriptions?.apartments_configured ? formatMoney(data.subscriptions.monthly_expected_total, locale) : "—"}
+            hint={data.subscriptions?.apartments_configured ? `${data.subscriptions.apartments_configured}/${data.apartments_total} ${t("apartments")}` : t("subscriptions_not_active")}
+          />
         </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-3">
@@ -66,6 +73,7 @@ function DashboardPage() {
             label={t("balance")}
             value={formatMoney(data.my_apartment?.balance ?? 0, locale)}
           />
+            
         </div>
       )}
 

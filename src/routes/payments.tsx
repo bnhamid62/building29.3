@@ -200,7 +200,9 @@ function PaymentsPage() {
                     return (
                       <TableRow key={apartment.id}>
                         <TableCell className="font-medium">{apartment.number}</TableCell>
-                        <TableCell className="hidden sm:table-cell">{apartment.floor}</TableCell>
+                       <TableCell className="hidden sm:table-cell">
+  {apartment.floor === 0 ? t("ground_floor") : `${t("floor")} ${apartment.floor}`}
+</TableCell>
                         <TableCell>{formatMoney(apartment.required_total, locale)}</TableCell>
                         <TableCell>{formatMoney(apartment.paid_total, locale)}</TableCell>
                         <TableCell className="hidden sm:table-cell">{formatMoney(apartment.balance, locale)}</TableCell>

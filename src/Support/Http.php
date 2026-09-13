@@ -46,11 +46,13 @@ final class Http
         return (string) ($_SERVER['REMOTE_ADDR'] ?? '');
     }
 
-    public static function cors(): void
+           public static function cors(): void
     {
         $origin  = $_SERVER['HTTP_ORIGIN'] ?? '';
         $allowed = Config::get('cors_origins', []);
-        if ($origin !== '' && in_array($origin, $allowed, true)) {
+        $isDev   = Config::get('env') === 'development';
+        $isLan   = $isDev && preg_match('#^https?://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3})(:\d+)?$#', $origin) === 1;
+        if ($origin !== '' && (in_array($origin, $allowed, true) || $isLan)) {
             header('Access-Control-Allow-Origin: ' . $origin);
             header('Vary: Origin');
             header('Access-Control-Allow-Credentials: true');

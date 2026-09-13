@@ -7,6 +7,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { useAuth } from "@/auth/AuthProvider";
 import { OfflineWriteNotice } from "@/components/app/OfflineBanner";
 import { assertOnline, useOnline } from "@/lib/offline";
+import { generateId } from "@/lib/uuid";
 import { useI18n } from "@/i18n";
 import { ErrorState } from "@/components/app/ApiState";
 import { firstIssue, paymentSchema } from "@/lib/validation";
@@ -97,7 +98,7 @@ function PaymentsPage() {
       setError(`${t("err_validation")} (${firstIssue(parsed)})`);
       return;
     }
-    create.mutate({ ...parsed.data, idempotency_key: crypto.randomUUID() });
+    create.mutate({ ...parsed.data, idempotency_key: generateId() });
   };
 
   return (

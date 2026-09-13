@@ -120,22 +120,40 @@ function ProjectDetailPage() {
         <CardHeader>
           <CardTitle className="text-base">{t("apartments")}</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-5">
-          {apartments.map((apartment) => (
-            <Link
-              key={apartment.id}
-              to="/apartments/$id"
-              params={{ id: String(apartment.id) }}
-              className="flex items-center gap-2 rounded-lg border p-2 text-sm transition-colors hover:bg-muted"
-            >
-              {apartment.settled ? (
-                <CheckCircle2 className="size-4 text-success" />
-              ) : (
-                <Circle className="size-4 text-muted-foreground" />
-              )}
-              <span className="truncate">{apartment.number}</span>
-            </Link>
-          ))}
+               <CardContent className="space-y-4">
+          {Object.entries(
+            apartments.reduce<Record<number, typeof apartments>>((groups, apartment) => {
+              const list = groups[apartment.floor] ?? [];
+              list.push(apartment);
+              groups[apartment.floor] = list;
+              return groups;
+            }, {}),
+          )
+            .sort(([a], [b]) => Number(a) - Number(b))
+            .map(([floor, floorApartments]) => (
+              <div key={floor} className="space-y-2">
+                <h4 className="text-sm font-medium text-muted-foreground">
+                  {Number(floor) === 0 ? t("ground_floor") : `${t("floor")} ${floor}`}
+                </h4>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-5">
+                  {floorApartments.map((apartment) => (
+                    <Link
+                      key={apartment.id}
+                      to="/apartments/$id"
+                      params={{ id: String(apartment.id) }}
+                      className="flex items-center gap-2 rounded-lg border p-2 text-sm transition-colors hover:bg-muted"
+                    >
+                      {apartment.settled ? (
+                        <CheckCircle2 className="size-4 text-success" />
+                      ) : (
+                        <Circle className="size-4 text-muted-foreground" />
+                      )}
+                      <span className="truncate">{apartment.number}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
         </CardContent>
       </Card>
 

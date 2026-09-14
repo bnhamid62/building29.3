@@ -34,7 +34,21 @@ export const paymentSchema = z.object({
   /** Cash only: the building collects contributions in person. */
   method: z.literal("cash"),
   notes: z.string().max(500).optional(),
+  });
+  export const voteSchema = z.object({
+  title_ar: z.string().trim().min(3).max(190),
+  title_fr: z.string().trim().min(3).max(190),
+  description_ar: z.string().trim().max(4000).optional(),
+  description_fr: z.string().trim().max(4000).optional(),
+  starts_at: z.string().min(1),
+  ends_at: z.string().min(1),
+  status: z.enum(["draft", "open"]),
+  options: z
+    .array(z.object({ label_ar: z.string().trim().min(1).max(190) }))
+    .min(2)
+    .max(10),
 });
+
 
 export const complaintSchema = z.object({
   title: z.string().trim().min(3).max(150),

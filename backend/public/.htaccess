@@ -1,0 +1,33 @@
+# Building 29 — single folder serving BOTH the PHP REST API and the static SPA.
+#
+#   /api/...        -> index.php   (PHP 8 REST API)
+#   /accueil.html   -> static landing page (syndic contact + links)
+#   existing file   -> served as-is (assets, icons, sw.js, push-sw.js)
+#   anything else   -> index.html  (React SPA deep links keep working on refresh)
+
+RewriteEngine On
+
+# 1) REST API: every /api request is handled by the PHP front controller.
+RewriteCond %{REQUEST_URI} (^|/)api(/|$)
+RewriteRule ^ index.php [QSA,L]
+
+# 2) Real files and directories are served directly.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 3) Everything else falls back to the SPA shell (only if it was deployed).
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+RewriteCond %{REQUEST_FILENAME}/index.html !-f
+RewriteRule ^ index.html [L]
+
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# The service workers must never be cached by the browser for long.
+<FilesMatch "^(sw|push-sw)\.js$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, max-age=0, must-revalidate"
+  </IfModule>
+</FilesMatch>

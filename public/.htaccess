@@ -1,0 +1,18 @@
+# SPA fallback for Apache shared hosting (InfinityFree, AppServ, cPanel...).
+# Serves existing files/assets directly, and routes every other URL to index.html
+# so deep links like /payments or /projects/3 work after a page refresh.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Do not touch real files or directories (assets, images, sw.js, api proxy...)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+</IfModule>

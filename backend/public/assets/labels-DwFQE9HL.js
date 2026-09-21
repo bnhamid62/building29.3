@@ -1,0 +1,1 @@
+var e=e=>`st_${e}`,t=e=>`cat_${e}`,n=e=>`pr_${e}`,r=e=>`eq_${e}`;export{e as i,r as n,n as r,t};

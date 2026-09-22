@@ -23,6 +23,7 @@ import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as ResidentsRouteImport } from './routes/residents'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SubscriptionsRouteImport } from './routes/subscriptions'
 import { Route as VotesRouteImport } from './routes/votes'
 import { Route as ApartmentsIndexRouteImport } from './routes/apartments.index'
 import { Route as ApartmentsIdRouteImport } from './routes/apartments.$id'
@@ -100,6 +101,11 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubscriptionsRoute = SubscriptionsRouteImport.update({
+  id: '/subscriptions',
+  path: '/subscriptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VotesRoute = VotesRouteImport.update({
   id: '/votes',
   path: '/votes',
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/residents': typeof ResidentsRoute
   '/settings': typeof SettingsRoute
+  '/subscriptions': typeof SubscriptionsRoute
   '/votes': typeof VotesRoute
   '/apartments/$id': typeof ApartmentsIdRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/residents': typeof ResidentsRoute
   '/settings': typeof SettingsRoute
+  '/subscriptions': typeof SubscriptionsRoute
   '/votes': typeof VotesRoute
   '/apartments/$id': typeof ApartmentsIdRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/residents': typeof ResidentsRoute
   '/settings': typeof SettingsRoute
+  '/subscriptions': typeof SubscriptionsRoute
   '/votes': typeof VotesRoute
   '/apartments/$id': typeof ApartmentsIdRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/residents'
     | '/settings'
+    | '/subscriptions'
     | '/votes'
     | '/apartments/$id'
     | '/projects/$id'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/residents'
     | '/settings'
+    | '/subscriptions'
     | '/votes'
     | '/apartments/$id'
     | '/projects/$id'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/reports'
     | '/residents'
     | '/settings'
+    | '/subscriptions'
     | '/votes'
     | '/apartments/$id'
     | '/projects/$id'
@@ -282,6 +294,7 @@ export interface RootRouteChildren {
   ReportsRoute: typeof ReportsRoute
   ResidentsRoute: typeof ResidentsRoute
   SettingsRoute: typeof SettingsRoute
+  SubscriptionsRoute: typeof SubscriptionsRoute
   VotesRoute: typeof VotesRoute
   ApartmentsIdRoute: typeof ApartmentsIdRoute
   ProjectsIdRoute: typeof ProjectsIdRoute
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subscriptions': {
+      id: '/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/subscriptions'
+      preLoaderRoute: typeof SubscriptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/votes': {
       id: '/votes'
       path: '/votes'
@@ -450,6 +470,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportsRoute: ReportsRoute,
   ResidentsRoute: ResidentsRoute,
   SettingsRoute: SettingsRoute,
+  SubscriptionsRoute: SubscriptionsRoute,
   VotesRoute: VotesRoute,
   ApartmentsIdRoute: ApartmentsIdRoute,
   ProjectsIdRoute: ProjectsIdRoute,
